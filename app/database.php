@@ -2,7 +2,7 @@
 $host = "c0tme.h.filess.io";
 $dbname = "COSC4806001JS2_figurewhom";
 $username = "COSC4806001JS2_figurewhom";
-$password = "3d3609d66a573a2d6fbfc82643ef3b46b035d711";
+$password = "$_ENV[password]";
 $port = "61000";
 try 
 {
