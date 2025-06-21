@@ -21,7 +21,11 @@ switch ($action) {
         break;
 
     case 'register':
-        $loginController->showRegisterForm();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $loginController->register();
+        } else {
+            $loginController->showRegisterForm();
+        }
         break;
 
     case 'home':
