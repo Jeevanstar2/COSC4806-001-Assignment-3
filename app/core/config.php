@@ -1,21 +1,13 @@
 <?php
+$host = "c0tme.h.filess.io";
+$dbname = "COSC4806001JS2_figurewhom";
+$username = "COSC4806001JS2_figurewhom";
+$password = "your_actual_password";
+$port = "61000";
 
-define('VERSION', '0.7.0');
-
-define('DS', DIRECTORY_SEPARATOR);
-define('ROOT', dirname(__DIR__));
-define('APPS', ROOT . DS . 'app');
-define('CORE', ROOT . DS . 'core');
-define('LIBS', ROOT . DS . 'lib');
-define('MODELS', ROOT . DS . 'models');
-define('VIEWS', ROOT . DS . 'views');
-define('CONTROLLERS', ROOT . DS . 'controllers');
-define('LOGS', ROOT . DS . 'logs');	
-define('FILES', ROOT . DS. 'files');
-
-// ---------------------  NEW DATABASE TABLE -------------------------
-define('DB_HOST',         'xxw.h.filess.io');
-define('DB_USER',         '4806_sentenceby'); 
-define('DB_PASS',         $_ENV['DB_PASS']);
-define('DB_DATABASE',     '4806_sentenceby');
-define('DB_PORT',         '3305');
+try {
+    $pdo = new PDO("mysql:host=$host;port=$port;dbname=$dbname", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Database connection failed: " . $e->getMessage());
+}
