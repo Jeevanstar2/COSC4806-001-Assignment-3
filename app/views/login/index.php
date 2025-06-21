@@ -1,29 +1,26 @@
-<?php require_once 'app/views/templates/headerPublic.php'?>
-<main role="main" class="container">
-    <div class="page-header" id="banner">
-        <div class="row">
-            <div class="col-lg-12">
-                <h1>You are not logged in</h1>
-            </div>
-        </div>
-    </div>
+	<!DOCTYPE html>
+	<html>
+	<head>
+			<title>Login</title>
+			<style>
+					.error-msg {
+							color: red;
+							margin-left: 40px;
+					}
+			</style>
+	</head>
+	<body>
+			<h2>Login Page</h2>
+			<form action="index.php?action=login" method="POST">
+					Username: <input type="text" name="username" required><br><br>
+					Password: <input type="password" name="password" required><br><br>
 
-<div class="row">
-    <div class="col-sm-auto">
-		<form action="/login/verify" method="post" >
-		<fieldset>
-			<div class="form-group">
-				<label for="username">Username</label>
-				<input required type="text" class="form-control" name="username">
-			</div>
-			<div class="form-group">
-				<label for="password">Password</label>
-				<input required type="password" class="form-control" name="password">
-			</div>
-            <br>
-		    <button type="submit" class="btn btn-primary">Login</button>
-		</fieldset>
-		</form> 
-	</div>
-</div>
-    <?php require_once 'app/views/templates/footer.php' ?>
+					<?php if (isset($_GET['error'])): ?>
+							<p class="error-msg"><?php echo htmlspecialchars($_GET['error']); ?></p>
+					<?php endif; ?>
+
+					<input type="submit" value="Login">
+			</form>
+			<p>Don't have an account? <a href="index.php?action=register">Create a new account</a></p>
+	</body>
+	</html>

@@ -1,5 +1,31 @@
-<?php 
+<?php
+require_once 'app/controllers/LoginController.php';
+require_once 'app/controllers/HomeController.php';
 
-require_once 'app/init.php';
+$action = $_GET['action'] ?? null;
 
-$app = new App;
+$loginController = new LoginController();
+$homeController = new HomeController();
+
+switch ($action) {
+    case 'login':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $loginController->login();
+        } else {
+            $loginController->showLoginForm();
+        }
+        break;
+
+    case 'logout':
+        $loginController->logout();
+        break;
+
+    case 'register':
+        $loginController->showRegisterForm();
+        break;
+
+    case 'home':
+    default:
+        $homeController->index();
+        break;
+}
