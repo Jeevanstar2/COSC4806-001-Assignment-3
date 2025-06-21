@@ -1,37 +1,35 @@
 <?php
-require_once __DIR__ . '/../core/config.php';
-
 class User {
-    public static function find($username) {
-        global $pdo;
-        $stmt = $pdo->prepare("SELECT * FROM COSC4806001_Assignment2_Users WHERE Username = ?");
-        $stmt->execute([$username]);
-        return $stmt->fetch();
+    private $pdo;
+
+    public function __construct($pdo) {
+        $this->pdo = $pdo;
     }
 
-    public static function create($username, $hashedPassword) {
-        global $pdo;
-        $stmt = $pdo->prepare("INSERT INTO COSC4806001_Assignment2_Users (Username, Password) VALUES (?, ?)");
+    public function findByUsername($username) {
+        $stmt = $this->pdo->prepare("SELECT * FROM COSC4806001_Assignment3 WHERE Username = ?");
+        $stmt->execute([$username]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function create($username, $hashedPassword) {
+        $stmt = $this->pdo->prepare("INSERT INTO COSC4806001_Assignment3 (Username, Password) VALUES (?, ?)");
         return $stmt->execute([$username, $hashedPassword]);
     }
 
-    public static function logAttempt($username, $status) {
-        global $pdo;
-        $stmt = $pdo->prepare("INSERT INTO log (username, status) VALUES (?, ?)");
-        $stmt->execute([$username, $status]);
+    public function logAttempt($username, $status) {
+        $stmt = $this->pdo->prepare("INSERT INTO login_log (username, status, attempt_time) VALUES (?, ?, NOW())");
+        return $stmt->execute([$username, $status]);
     }
 
-    public static function getFailedAttempts($username) {
-        global $pdo;
-        $stmt = $pdo->prepare("SELECT COUNT(*) FROM log WHERE username = ? AND status = 'fail' AND time >= NOW() - INTERVAL 5 MINUTE");
+    public function getRecentFailedAttempts($username) {
+        $stmt = $this->pdo->prepare("
+            SELECT attempt_time FROM login_log 
+            WHERE username = ? AND status = 'fail' 
+            ORDER BY attempt_time DESC 
+            LIMIT 3
+        ");
         $stmt->execute([$username]);
-        return $stmt->fetchColumn();
-    }
-
-    public static function getLastFailedTime($username) {
-        global $pdo;
-        $stmt = $pdo->prepare("SELECT time FROM log WHERE username = ? AND status = 'fail' ORDER BY time DESC LIMIT 1");
-        $stmt->execute([$username]);
-        return $stmt->fetchColumn();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

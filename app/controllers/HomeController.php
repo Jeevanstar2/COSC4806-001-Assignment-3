@@ -9,6 +9,6 @@ class HomeController {
             exit;
         }
 
-        include __DIR__ . '/../../views/home.php';
+        include 'views/Home.php';
     }
 }

@@ -1,18 +1,13 @@
-<?php require_once 'app/views/templates/header.php' ?>
-<div class="container">
-    <div class="page-header" id="banner">
-        <div class="row">
-            <div class="col-lg-12">
-                <h1>Hey</h1>
-                <p class="lead"> <?= date("F jS, Y"); ?></p>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-12">
-            <p> <a href="/logout">Click here to logout</a></p>
-        </div>
-    </div>
-
-    <?php require_once 'app/views/templates/footer.php' ?>
+<?php session_start(); ?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" href="public/css/style.css">
+</head>
+<body>
+    <h2>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h2>
+    <img src="https://www.icegif.com/wp-content/uploads/2023/01/icegif-162.gif" alt="Rickroll" style="width: 100%; max-width: 600px;">
+    <p><a href="index.php?action=logout">Logout</a></p>
+</body>
+</html>

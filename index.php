@@ -1,35 +1,46 @@
 <?php
-require_once 'app/controllers/LoginController.php';
-require_once 'app/controllers/HomeController.php';
+require_once 'app/init.php';
 
-$action = $_GET['action'] ?? null;
-
-$loginController = new LoginController();
-$homeController = new HomeController();
+$action = $_GET['action'] ?? 'login';
 
 switch ($action) {
     case 'login':
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $loginController->login();
-        } else {
-            $loginController->showLoginForm();
-        }
+        require_once 'app/controllers/Login.php';
+        $controller = new Login();
+        $controller->showLoginForm();
         break;
 
-    case 'logout':
-        $loginController->logout();
+    case 'loginUser':
+        require_once 'app/controllers/Login.php';
+        $controller = new Login();
+        $controller->login();
         break;
 
     case 'register':
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $loginController->register();
-        } else {
-            $loginController->showRegisterForm();
-        }
+        require_once 'app/controllers/Register.php';
+        $controller = new Register();
+        $controller->showRegisterForm();
+        break;
+
+    case 'registerUser':
+        require_once 'app/controllers/Register.php';
+        $controller = new Register();
+        $controller->register();
         break;
 
     case 'home':
+        require_once 'app/controllers/Home.php';
+        $controller = new Home();
+        $controller->index();
+        break;
+
+    case 'logout':
+        require_once 'app/controllers/Login.php';
+        $controller = new Login();
+        $controller->logout();
+        break;
+
     default:
-        $homeController->index();
+        header("Location: index.php?action=login");
         break;
 }

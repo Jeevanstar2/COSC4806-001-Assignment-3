@@ -1,24 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login</title>
+    <title>Register</title>
     <link rel="stylesheet" href="public/css/style.css">
 </head>
 <body>
-    <h2>Login Page</h2>
+    <h2>Register Account</h2>
 
     <?php if (isset($_GET['error'])): ?>
         <p style="color: red;"><?php echo htmlspecialchars($_GET['error']); ?></p>
-    <?php elseif (isset($_GET['success'])): ?>
-        <p style="color: green;"><?php echo htmlspecialchars($_GET['success']); ?></p>
     <?php endif; ?>
 
-    <form action="index.php?action=loginUser" method="POST">
+    <form action="index.php?action=registerUser" method="POST">
         Username: <input type="text" name="username" required><br><br>
         Password: <input type="password" name="password" required><br><br>
-        <input type="submit" value="Login">
+        Confirm Password: <input type="password" name="confirm_password" required><br><br>
+        <input type="submit" value="Register">
     </form>
 
-    <p>Don't have an account? <a href="index.php?action=register">Register</a></p>
+    <p><a href="index.php?action=login">Back to Login</a></p>
 </body>
 </html>
