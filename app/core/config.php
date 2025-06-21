@@ -2,7 +2,7 @@
 $host = "c0tme.h.filess.io";
 $dbname = "COSC4806001JS2_figurewhom";
 $username = "COSC4806001JS2_figurewhom";
-$password = "$_ENV[password]";
+$password = getenv("password");
 $port = "61000";
 
 try {
@@ -11,3 +11,4 @@ try {
 } catch (PDOException $e) {
     die("Database connection failed: " . $e->getMessage());
 }
+?>

@@ -1,14 +1,13 @@
 <?php
 
-class HomeController {
+class Home {
     public function index() {
         session_start();
-
         if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
             header("Location: index.php?action=login");
-            exit;
+            exit();
         }
 
-        include 'views/Home.php';
+        include 'app/views/home/index.php';
     }
 }

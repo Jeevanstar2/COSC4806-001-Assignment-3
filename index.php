@@ -1,46 +1,40 @@
 <?php
-require_once 'app/init.php';
+require_once 'app/core/config.php';
 
 $action = $_GET['action'] ?? 'login';
 
 switch ($action) {
     case 'login':
-        require_once 'app/controllers/Login.php';
-        $controller = new Login();
-        $controller->showLoginForm();
+        require 'app/controllers/LoginController.php';
+        (new LoginController())->showLogin();
         break;
 
-    case 'loginUser':
-        require_once 'app/controllers/Login.php';
-        $controller = new Login();
-        $controller->login();
-        break;
-
-    case 'register':
-        require_once 'app/controllers/Register.php';
-        $controller = new Register();
-        $controller->showRegisterForm();
-        break;
-
-    case 'registerUser':
-        require_once 'app/controllers/Register.php';
-        $controller = new Register();
-        $controller->register();
-        break;
-
-    case 'home':
-        require_once 'app/controllers/Home.php';
-        $controller = new Home();
-        $controller->index();
+    case 'doLogin':
+        require 'app/controllers/LoginController.php';
+        (new LoginController())->login();
         break;
 
     case 'logout':
-        require_once 'app/controllers/Login.php';
-        $controller = new Login();
-        $controller->logout();
+        require 'app/controllers/LoginController.php';
+        (new LoginController())->logout();
+        break;
+
+    case 'register':
+        require 'app/controllers/RegisterController.php';
+        (new RegisterController())->showForm();
+        break;
+
+    case 'store':
+        require 'app/controllers/RegisterController.php';
+        (new RegisterController())->create();
+        break;
+
+    case 'home':
+        require 'app/controllers/LoginController.php';
+        (new LoginController())->home();
         break;
 
     default:
-        header("Location: index.php?action=login");
-        break;
+        echo "404 Not Found";
 }
+?>
