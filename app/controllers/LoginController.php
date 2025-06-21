@@ -4,7 +4,7 @@ require_once __DIR__ . '/../models/User.php';
 class LoginController {
 
     public function showLoginForm() {
-        include 'views/login.php';
+        include __DIR__ . '/../../views/login.php';
     }
 
     public function login() {
@@ -49,7 +49,7 @@ class LoginController {
     }
 
     public function showRegisterForm() {
-        include 'views/register.php';
+        include __DIR__ . '/../../views/register.php';
     }
 
     public function register() {
