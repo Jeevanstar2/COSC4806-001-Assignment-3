@@ -1,50 +1,37 @@
 <?php
+require_once __DIR__ . '/../core/config.php';
 
 class User {
-
-    public $username;
-    public $password;
-    public $auth = false;
-
-    public function __construct() {
-        
+    public static function find($username) {
+        global $pdo;
+        $stmt = $pdo->prepare("SELECT * FROM COSC4806001_Assignment2_Users WHERE Username = ?");
+        $stmt->execute([$username]);
+        return $stmt->fetch();
     }
 
-    public function test () {
-      $db = db_connect();
-      $statement = $db->prepare("select * from users;");
-      $statement->execute();
-      $rows = $statement->fetch(PDO::FETCH_ASSOC);
-      return $rows;
+    public static function create($username, $hashedPassword) {
+        global $pdo;
+        $stmt = $pdo->prepare("INSERT INTO COSC4806001_Assignment2_Users (Username, Password) VALUES (?, ?)");
+        return $stmt->execute([$username, $hashedPassword]);
     }
 
-    public function authenticate($username, $password) {
-        /*
-         * if username and password good then
-         * $this->auth = true;
-         */
-		$username = strtolower($username);
-		$db = db_connect();
-        $statement = $db->prepare("select * from users WHERE username = :name;");
-        $statement->bindValue(':name', $username);
-        $statement->execute();
-        $rows = $statement->fetch(PDO::FETCH_ASSOC);
-		
-		if (password_verify($password, $rows['password'])) {
-			$_SESSION['auth'] = 1;
-			$_SESSION['username'] = ucwords($username);
-			unset($_SESSION['failedAuth']);
-			header('Location: /home');
-			die;
-		} else {
-			if(isset($_SESSION['failedAuth'])) {
-				$_SESSION['failedAuth'] ++; //increment
-			} else {
-				$_SESSION['failedAuth'] = 1;
-			}
-			header('Location: /login');
-			die;
-		}
+    public static function logAttempt($username, $status) {
+        global $pdo;
+        $stmt = $pdo->prepare("INSERT INTO log (username, status) VALUES (?, ?)");
+        $stmt->execute([$username, $status]);
     }
 
+    public static function getFailedAttempts($username) {
+        global $pdo;
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM log WHERE username = ? AND status = 'fail' AND time >= NOW() - INTERVAL 5 MINUTE");
+        $stmt->execute([$username]);
+        return $stmt->fetchColumn();
+    }
+
+    public static function getLastFailedTime($username) {
+        global $pdo;
+        $stmt = $pdo->prepare("SELECT time FROM log WHERE username = ? AND status = 'fail' ORDER BY time DESC LIMIT 1");
+        $stmt->execute([$username]);
+        return $stmt->fetchColumn();
+    }
 }
