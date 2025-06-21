@@ -1,14 +1,18 @@
 <?php
-
-/* database connection stuff here
- * 
- */
-
-function db_connect() {
-    try { 
-        $dbh = new PDO('mysql:host=' . DB_HOST . ';port='. DB_PORT . ';dbname=' . DB_DATABASE, DB_USER, DB_PASS);
-        return $dbh;
-    } catch (PDOException $e) {
-        //We should set a global variable here so we know the DB is down
-    }
+$host = "c0tme.h.filess.io";
+$dbname = "COSC4806001JS2_figurewhom";
+$username = "COSC4806001JS2_figurewhom";
+$password = "$_ENV[password]";
+$port = "61000";
+try 
+{
+    $pdo = new PDO("mysql:host=$host;port=$port;dbname=$dbname", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} 
+catch (PDOException $e) 
+{
+    die("Database connection failed: " . $e->getMessage());
 }
+    echo "Database connection successful!";
+?>
+
