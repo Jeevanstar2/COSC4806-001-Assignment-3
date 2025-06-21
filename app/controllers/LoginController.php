@@ -4,7 +4,7 @@ require_once __DIR__ . '/../models/User.php';
 class LoginController {
 
     public function showLoginForm() {
-        include __DIR__ . '/../views/login.php';
+        include 'views/login.php';
     }
 
     public function login() {
@@ -16,7 +16,6 @@ class LoginController {
         $user = User::find($username);
 
         if ($user && password_verify($password, $user['Password'])) {
-            // Reset failed attempts and log success
             $_SESSION['authenticated'] = true;
             $_SESSION['username'] = $username;
             $_SESSION['login_attempts'] = 0;
@@ -24,11 +23,9 @@ class LoginController {
             header("Location: index.php");
             exit;
         } else {
-            // Track failure
             $_SESSION['login_attempts'] = ($_SESSION['login_attempts'] ?? 0) + 1;
             User::logAttempt($username, 'fail');
 
-            // Check if locked out
             $failCount = User::getFailedAttempts($username);
             $lastFail = User::getLastFailedTime($username);
 
@@ -52,11 +49,10 @@ class LoginController {
     }
 
     public function showRegisterForm() {
-        include __DIR__ . '/../views/register.php';
+        include 'views/register.php';
     }
 
     public function register() {
-        require_once __DIR__ . '/../models/User.php';
         session_start();
 
         $username = trim($_POST['username']);
