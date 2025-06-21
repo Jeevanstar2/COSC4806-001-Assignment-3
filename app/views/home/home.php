@@ -1,7 +1,9 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Home</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h3>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h3>
